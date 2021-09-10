@@ -4,6 +4,7 @@ const cors = require('cors');
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUI = require('swagger-ui-express');
 const swaggerOptions = require('../docs/swaggerOptions');
+const dataBaseConnection = require('../config/database');
 
 class Server {
     constructor() {
@@ -12,7 +13,11 @@ class Server {
 
         this.swaggerSpec = swaggerJsDoc(swaggerOptions);
 
+        // connect database
+        this.connectDB();
+
         this.paths = {
+            users: '/api/users',
             auth: '/api/auth',
             products: '/api/products',
             orders: '/api/orders',
@@ -24,6 +29,10 @@ class Server {
         this.middlewares();
         //routes the app
         this.routes();
+    }
+
+    async connectDB() {
+        await dataBaseConnection();
     }
 
     middlewares() {
@@ -39,6 +48,8 @@ class Server {
         this.app.use(this.paths.docs, swaggerUI.serve, swaggerUI.setup(this.swaggerSpec));
         // view in localhost:4000/api-docs
 
+        // users routes
+        this.app.use( this.paths.users, require('../routes/user.route'));
         // auth routes
         this.app.use( this.paths.auth, require('../routes/auth.route'));
         // products routes
