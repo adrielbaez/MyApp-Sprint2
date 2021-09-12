@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const morgan = require('morgan')
 //Swagger
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUI = require('swagger-ui-express');
@@ -41,6 +42,8 @@ class Server {
 
         // parseo del body
         this.app.use( express.json() );
+        
+        this.app.use(morgan('dev'));
     }
 
     routes() {
@@ -66,4 +69,4 @@ class Server {
 }
 
 
-module.exports = Server;
+module.exports = { Server };

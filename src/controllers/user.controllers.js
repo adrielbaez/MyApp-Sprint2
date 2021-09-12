@@ -1,6 +1,6 @@
-const UserModel = require("../models/user.model");
 const bcryptjs = require('bcryptjs');
 const { generateJwt } = require("../helpers");
+const { UserModel } = require('../models');
 const userControllers = {
 
     signup: async (req, res) => {
@@ -182,4 +182,6 @@ const userControllers = {
     }
 }
 
-module.exports = userControllers;
+module.exports = {
+    ...userControllers
+}

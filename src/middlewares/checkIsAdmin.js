@@ -1,15 +1,15 @@
-const checkIsAdmin = ( req, res = response, next ) => {
+const checkIsAdmin = ( req, res , next ) => {
 
-    if ( !req.usuario ) {
+    if ( !req.user ) {
         return res.status(500).json({
             success: false,
             response: 'You want to verify the role without validating the token first'
         });
     }
 
-    const { isAdmin, firstName, lastName } = req.usuario;
+    const { isAdmin, firstName, lastName } = req.user;
     
-    if ( isAdmin !== 'ADMIN_ROLE' ) {
+    if ( !isAdmin ) {
         return res.status(401).json({
             success: false,
             response: `${ firstName } ${ lastName } is not an administrator`

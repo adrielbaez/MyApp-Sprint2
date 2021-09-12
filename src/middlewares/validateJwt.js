@@ -1,7 +1,5 @@
 const jwt = require('jsonwebtoken');
-
-const UserModel = require('../models/user.model');
-
+const { UserModel } = require('../models');
 
 const validateJwt = async( req, res, next ) => {
 
@@ -17,7 +15,6 @@ const validateJwt = async( req, res, next ) => {
     try {
         
         const { uid } = jwt.verify( token, process.env.SECRETORPRIVATEKEY );
-
         // leer el usuario que corresponde al uid
         const user = await UserModel.findById( uid );
 
