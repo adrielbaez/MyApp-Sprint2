@@ -1,6 +1,6 @@
 const UserModel = require("../models/user.model");
 const bcryptjs = require('bcryptjs');
-
+const { generateJwt } = require("../helpers");
 const userControllers = {
 
     signup: async (req, res) => {
@@ -20,8 +20,8 @@ const userControllers = {
                 response = userToSave;
                 status = 201
             } catch (err) {
-                error = 'There was an error saving user, please retry again';
-                status = 400
+                error = 'Internal error on the server';
+                status = 500
                 console.log(err);
             }
         } else {
@@ -57,7 +57,12 @@ const userControllers = {
 
                 if (passwordMatch) {
 
-                    response = `Welcome ${userToLogin.firstName} to our App`;
+                    //genero token
+                    const token = await generateJwt( userToLogin._id ); 
+                    response = {
+                        user: userToLogin,
+                        token
+                    }
                     status = 200;
 
                 } else {
@@ -93,8 +98,8 @@ const userControllers = {
             response = allUsers;
             status = 200
         } catch (err) {
-            error = `error get all users`
-            status = 404
+            error = `Internal error on the server`
+            status = 500
             console.log(err);
         }
 
@@ -116,8 +121,8 @@ const userControllers = {
             response = userToFind;
             status = 200
         } catch (err) {
-            error = `error get one user`
-            status = 400
+            error = `Internal error on the server`
+            status = 500
             console.log(err);
         }
 
@@ -139,8 +144,8 @@ const userControllers = {
             response = userToUpdate;
             status = 200;
         } catch (err) {
-            error = `error update user`
-            status = 400
+            error = `Internal error on the server`
+            status = 500
             console.log(err);
         }
 
@@ -158,12 +163,14 @@ const userControllers = {
         let status;
 
         try {
-            await UserModel.findOneAndRemove({ _id: id })
-            response = 'Delete complete';
+            const userDeleted = await UserModel.findOneAndRemove({ _id: id })
+            response = {
+                userDeleted
+            }
             status = 200;
         } catch (err) {
-            error = `error delete User`;
-            status = 400;
+            error = `Internal error on the server`;
+            status = 500;
             console.log(err);
         }
 
