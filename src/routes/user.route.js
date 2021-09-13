@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const { validateJwt, checkIsAdmin } = require('../middlewares');
-const { signup, signin, getOneUser, getAllUsers, updateUser, deleteUser } = require('../controllers');
+const { userControllers } = require('../controllers');
+const { signup, signin, getOneUser, getAllUsers, updateUser, deleteUser } = userControllers
 
 router.post('/signup', signup);
 router.post('/signin', signin);

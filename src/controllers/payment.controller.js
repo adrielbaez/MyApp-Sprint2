@@ -1,17 +1,18 @@
-const { ProductModel } = require("../models");
+const { PaymentModel } = require("../models");
 
-const productControllers = {
-    newProduct: async(req, res) => {
+const paymentControllers = {
+    
+    newPaymentMethod: async(req, res) => {
         let response;
         let error;
         let status;
 
         try {
 
-            const productToSave = new ProductModel({ ...req.body })
-            await productToSave.save();
+            const paymentToSave = new PaymentModel({ ...req.body })
+            await paymentToSave.save();
 
-            response= productToSave;
+            response= paymentToSave;
             status= 201
 
         } catch (err) {
@@ -26,15 +27,16 @@ const productControllers = {
             error
         })
     },
-    getAllProducts: async(req, res)=>{
+
+    getAllPaymentMethods: async(req, res)=>{
         let response;
         let error;
         let status;
 
         try {
 
-            const allProducts = await ProductModel.find();
-            response= allProducts;
+            const allPaymentMethods = await PaymentModel.find();
+            response= allPaymentMethods;
             status=200;
             
         } catch (err) {
@@ -48,15 +50,16 @@ const productControllers = {
             error
         })
     },
-    getOneProduct: async(req, res)=>{
+
+    getOneMethodPayment: async(req, res)=>{
         const { id } = req.params
         let response;
         let error;
         let status;
 
         try {
-            const productToFind = await ProductModel.findById( id );
-            response= productToFind;
+            const paymentMethodToFind = await PaymentModel.findById( id );
+            response= paymentMethodToFind;
             status = 200;
             
         } catch (err) {
@@ -70,15 +73,16 @@ const productControllers = {
             error
         })
     },
-    updateProduct: async (req, res) => {
+
+    updateMethodPayment: async (req, res) => {
         const { id } = req.params;
         let response;
         let error;
         let status;
 
         try {
-            const productToUpdate = await ProductModel.findOneAndUpdate({ _id: id }, { ...req.body }, { new: true });
-            response = productToUpdate;
+            const paymentMethodToUpdate = await PaymentModel.findOneAndUpdate({ _id: id }, { ...req.body }, { new: true });
+            response = paymentMethodToUpdate;
             status = 200;
         } catch (err) {
             error = `Internal error on the server`
@@ -93,16 +97,16 @@ const productControllers = {
         })
     },
 
-    deleteProduct: async (req, res) => {
+    deletePaymentMethod: async (req, res) => {
         const { id } = req.params;
         let response;
         let error;
         let status;
 
         try {
-            const productDeleted = await ProductModel.findOneAndRemove({ _id: id })
+            const paymentMethodDeleted = await PaymentModel.findOneAndRemove({ _id: id })
             response = {
-                productDeleted
+                paymentMethodDeleted
             }
             status = 200;
         } catch (err) {
@@ -119,6 +123,4 @@ const productControllers = {
     }
 }
 
-
-
-module.exports = productControllers;
+module.exports = paymentControllers;
