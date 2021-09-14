@@ -1,4 +1,4 @@
-const { OrderModel } = require("../models");
+const { OrderModel, ProductModel } = require("../models");
 const { stateOrderUser, stateOrderAdmin } = require("../types/types");
 
 const orderControllers ={ 
@@ -30,8 +30,14 @@ const orderControllers ={
                 phone, 
                 address} 
         })
-        await orderToSave.save()
-       console.log(orderToSave)
+        await orderToSave.save();
+        const orderSaved = await OrderModel.find({_id: orderToSave._id}).populate('allOrders')
+       console.log(orderSaved)
+       res.status(200).json({
+            success: response ? true : false,
+            orderSaved,
+            error
+        })
     },
 }
 
