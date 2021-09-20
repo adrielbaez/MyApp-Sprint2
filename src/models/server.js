@@ -48,9 +48,8 @@ class Server {
 
     routes() {
 
+        // swagger routes view in localhost:4000/api-docs
         this.app.use(this.paths.docs, swaggerUI.serve, swaggerUI.setup(this.swaggerSpec));
-        // view in localhost:4000/api-docs
-
         // users routes
         this.app.use( this.paths.users, require('../routes/user.route'));
         // auth routes

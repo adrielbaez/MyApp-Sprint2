@@ -11,6 +11,9 @@ const OrderSchema = new mongoose.Schema({
         required: true,
         default: 'PENDIENTE'
     }, 
+    address: {
+        type: String,
+    }, 
     paymentMethod: {
         type: String,
         default: 'EFECTIVO'
@@ -18,12 +21,9 @@ const OrderSchema = new mongoose.Schema({
     date: {
         type: String,
     }, 
-    total: {
-        type: Number,
-    },  
     user: {
         type: Object
-    } 
+    },
 })
 
 OrderSchema.methods.toJSON = function() {
