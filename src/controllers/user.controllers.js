@@ -1,9 +1,10 @@
 const bcryptjs = require('bcryptjs');
 const { generateJwt } = require("../helpers");
-const { UserModel } = require('../models');
+const { UserModel, OrderModel } = require('../models');
 const userControllers = {
 
     signup: async (req, res) => {
+
         let { email, password } = req.body
         let response;
         let error;
@@ -174,6 +175,33 @@ const userControllers = {
             console.log(err);
         }
 
+        res.status(status).json({
+            success: response ? true : false,
+            response,
+            error
+        })
+    },
+    getHistoryUser: async (req, res) => {
+        const { id } = req.params;
+        let response;
+        let error;
+        let status;
+
+        try {
+            
+            const existOrder = await OrderModel.find({ user: id }).populate('allOrders').populate({ path: 'user', model: UserModel, select: 'email' })
+
+            response = existOrder;
+            status= 200;
+            
+        } catch (err) {
+
+            error = `Internal error on the server`;
+            status = 500;
+            console.log(err);
+
+        }
+        
         res.status(status).json({
             success: response ? true : false,
             response,

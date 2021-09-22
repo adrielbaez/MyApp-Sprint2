@@ -8,11 +8,11 @@ const orderControllers = {
 
         let { allOrders, stateOrder, paymentMethod, date, address } = req.body
         const { user: userLogged } = req;
-        const { nickName, firstName, lastName, email, phone } = userLogged
+        const { _id, nickName, firstName, lastName, email, phone } = userLogged
         let response;
         let error;
         var status;
-        ;
+        
         //date
         const newDate = new Date();
         const currentDate = date ? date : `${newDate.getHours()}:${newDate.getMinutes()} ${newDate.getHours() < 12 ? 'AM' : 'PM'}`
@@ -28,13 +28,7 @@ const orderControllers = {
                     address,
                     paymentMethod,
                     date: currentDate,
-                    user: {
-                        nickName,
-                        firstName,
-                        lastName,
-                        email,
-                        phone,
-                    }
+                    user: _id
                 })
 
                 await orderToSave.save();
