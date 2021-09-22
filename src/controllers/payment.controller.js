@@ -3,13 +3,15 @@ const { PaymentModel } = require("../models");
 const paymentControllers = {
     
     newPaymentMethod: async(req, res) => {
+        let { paymentMethod } = req.body
+        paymentMethod = paymentMethod.toUpperCase();
         let response;
         let error;
         let status;
 
         try {
 
-            const paymentToSave = new PaymentModel({ ...req.body })
+            const paymentToSave = new PaymentModel({ ...req.body, paymentMethod })
             await paymentToSave.save();
 
             response= paymentToSave;

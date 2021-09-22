@@ -1,4 +1,4 @@
-const { OrderModel, ProductModel } = require("../models");
+const { OrderModel, ProductModel, PaymentModel } = require("../models");
 const { stateOrderUser, stateOrderAdmin } = require("../types/types");
 
 const orderControllers = {
@@ -6,9 +6,10 @@ const orderControllers = {
     // TODO: repensar esto
     newOrder: async (req, res) => {
 
-        let { allOrders, stateOrder, paymentMethod, date, address } = req.body
+        let { allOrders, stateOrder, paymentMethod, date, address } = req.body;
+        paymentMethod = paymentMethod.toUpperCase();
         const { user: userLogged } = req;
-        const { _id, nickName, firstName, lastName, email, phone } = userLogged
+        const { _id } = userLogged
         let response;
         let error;
         var status;
@@ -20,26 +21,38 @@ const orderControllers = {
         try {
             stateOrder = stateOrder ? stateOrder.toUpperCase() : '';
             const existsStateOrder = stateOrderUser.includes(stateOrder);
-            if (existsStateOrder) {
 
-                const orderToSave = new OrderModel({
-                    allOrders,
-                    stateOrder,
-                    address,
-                    paymentMethod,
-                    date: currentDate,
-                    user: _id
-                })
+             
+            const paymentMethods = await PaymentModel.find();
 
-                await orderToSave.save();
-                const orderSaved = await OrderModel.find({ _id: orderToSave._id }).populate('allOrders')
+            const availablePaymentMethod = paymentMethods.some(payment => payment.paymentMethod === paymentMethod)
 
-                response = orderSaved;
-                status = 200;
+            if (availablePaymentMethod) {
 
+                if (existsStateOrder) {
+
+                    const orderToSave = new OrderModel({
+                        allOrders,
+                        stateOrder,
+                        address,
+                        paymentMethod,
+                        date: currentDate,
+                        user: _id
+                    })
+    
+                    await orderToSave.save();
+                    const orderSaved = await OrderModel.find({ _id: orderToSave._id }).populate('allOrders')
+    
+                    response = orderSaved;
+                    status = 200;
+    
+                } else {
+                    error = `Order status is not valid`
+                    status = 400;
+                }
             } else {
-                error = `Order status is not valid`
-                status = 400;
+                error = `Payment Method not available`
+                    status = 400;
             }
 
         } catch (err) {

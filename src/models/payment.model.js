@@ -4,6 +4,7 @@ const PaymentSchema = new mongoose.Schema({
     paymentMethod: {
         type: String,
         required: true,
+        unique: true
     },
     deleted: {
         type: Boolean,
