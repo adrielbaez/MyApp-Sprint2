@@ -1,9 +1,10 @@
-const UserModel = require("../models/user.model");
 const bcryptjs = require('bcryptjs');
-
+const { generateJwt } = require("../helpers");
+const { UserModel, OrderModel } = require('../models');
 const userControllers = {
 
     signup: async (req, res) => {
+
         let { email, password } = req.body
         let response;
         let error;
@@ -16,12 +17,13 @@ const userControllers = {
                 password = bcryptjs.hashSync(password, 10);
                 const userToSave = new UserModel({ ...req.body, password })
                 await userToSave.save()
-
-                response = userToSave;
+                const token = await generateJwt( userToSave._id ); 
+                const user = userToSave;
+                response = { user , token };
                 status = 201
             } catch (err) {
-                error = 'There was an error saving user, please retry again';
-                status = 400
+                error = 'Internal error on the server';
+                status = 500
                 console.log(err);
             }
         } else {
@@ -31,6 +33,7 @@ const userControllers = {
 
         res.status(status).json({
             success: response ? true : false,
+            status,
             response,
             error
         })
@@ -57,7 +60,12 @@ const userControllers = {
 
                 if (passwordMatch) {
 
-                    response = `Welcome ${userToLogin.firstName} to our App`;
+                    //genero token
+                    const token = await generateJwt( userToLogin._id ); 
+                    response = {
+                        user: userToLogin,
+                        token
+                    }
                     status = 200;
 
                 } else {
@@ -79,6 +87,7 @@ const userControllers = {
 
         res.status(status).json({
             success: response ? true : false,
+            status,
             response,
             error
         })
@@ -93,13 +102,14 @@ const userControllers = {
             response = allUsers;
             status = 200
         } catch (err) {
-            error = `error get all users`
-            status = 404
+            error = `Internal error on the server`
+            status = 500
             console.log(err);
         }
 
         res.status(status).json({
             success: response ? true : false,
+            status,
             response,
             error
         })
@@ -116,13 +126,14 @@ const userControllers = {
             response = userToFind;
             status = 200
         } catch (err) {
-            error = `error get one user`
-            status = 400
+            error = `Internal error on the server`
+            status = 500
             console.log(err);
         }
 
         res.status(status).json({
             success: response ? true : false,
+            status,
             response,
             error
         })
@@ -139,13 +150,14 @@ const userControllers = {
             response = userToUpdate;
             status = 200;
         } catch (err) {
-            error = `error update user`
-            status = 400
+            error = `Internal error on the server`
+            status = 500
             console.log(err);
         }
 
         res.status(status).json({
             success: response ? true : false,
+            status,
             response,
             error
         })
@@ -158,21 +170,54 @@ const userControllers = {
         let status;
 
         try {
-            await UserModel.findOneAndRemove({ _id: id })
-            response = 'Delete complete';
+            const userDeleted = await UserModel.findOneAndRemove({ _id: id })
+            response = {
+                userDeleted
+            }
             status = 200;
         } catch (err) {
-            error = `error delete User`;
-            status = 400;
+            error = `Internal error on the server`;
+            status = 500;
             console.log(err);
         }
 
         res.status(status).json({
             success: response ? true : false,
+            status,
+            response,
+            error
+        })
+    },
+    getHistoryUser: async (req, res) => {
+        const { id } = req.params;
+        let response;
+        let error;
+        let status;
+
+        try {
+            
+            const existOrder = await OrderModel.find({ user: id }).populate('allOrders').populate({ path: 'user', model: UserModel, select: 'email' })
+
+            response = existOrder;
+            status= 200;
+            
+        } catch (err) {
+
+            error = `Internal error on the server`;
+            status = 500;
+            console.log(err);
+
+        }
+        
+        res.status(status).json({
+            success: response ? true : false,
+            status,
             response,
             error
         })
     }
 }
 
-module.exports = userControllers;
+module.exports = {
+    ...userControllers
+}
