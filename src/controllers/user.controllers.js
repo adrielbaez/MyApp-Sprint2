@@ -17,8 +17,9 @@ const userControllers = {
                 password = bcryptjs.hashSync(password, 10);
                 const userToSave = new UserModel({ ...req.body, password })
                 await userToSave.save()
-
-                response = userToSave;
+                const token = await generateJwt( userToSave._id ); 
+                const user = userToSave;
+                response = { user , token };
                 status = 201
             } catch (err) {
                 error = 'Internal error on the server';
@@ -32,6 +33,7 @@ const userControllers = {
 
         res.status(status).json({
             success: response ? true : false,
+            status,
             response,
             error
         })
