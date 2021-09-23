@@ -87,6 +87,7 @@ const userControllers = {
 
         res.status(status).json({
             success: response ? true : false,
+            status,
             response,
             error
         })
@@ -108,6 +109,7 @@ const userControllers = {
 
         res.status(status).json({
             success: response ? true : false,
+            status,
             response,
             error
         })
@@ -131,6 +133,7 @@ const userControllers = {
 
         res.status(status).json({
             success: response ? true : false,
+            status,
             response,
             error
         })
@@ -154,6 +157,7 @@ const userControllers = {
 
         res.status(status).json({
             success: response ? true : false,
+            status,
             response,
             error
         })
@@ -179,6 +183,7 @@ const userControllers = {
 
         res.status(status).json({
             success: response ? true : false,
+            status,
             response,
             error
         })
@@ -206,6 +211,7 @@ const userControllers = {
         
         res.status(status).json({
             success: response ? true : false,
+            status,
             response,
             error
         })

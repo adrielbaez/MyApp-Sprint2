@@ -62,6 +62,7 @@ const orderControllers = {
         }
         res.status(status).json({
             success: response ? true : false,
+            status,
             response,
             error
         })
@@ -103,6 +104,7 @@ const orderControllers = {
 
         res.status(status).json({
             success: response ? true : false,
+            status,
             response,
             error
         })
@@ -127,6 +129,7 @@ const orderControllers = {
         }
         res.status(status).json({
             success: response ? true : false,
+            status,
             response,
             error
         })
