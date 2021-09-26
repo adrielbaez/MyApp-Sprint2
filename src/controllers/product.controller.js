@@ -1,8 +1,8 @@
-const { json } = require("express");
 const redisClient = require("../config/redisConnection");
 const { ProductModel } = require("../models");
 
 const productControllers = {
+    
     newProduct: async(req, res) => {
         let response;
         let error;
@@ -29,6 +29,7 @@ const productControllers = {
             error
         })
     },
+
     getAllProducts: async(req, res)=>{
         let response;
         let error;
@@ -39,7 +40,7 @@ const productControllers = {
             const allProducts = await ProductModel.find();
             response= allProducts;
             status=200;
-
+            //added the products to the cache
             redisClient.set("allProducts", JSON.stringify(allProducts), 'EX', '60');
             
         } catch (err) {
@@ -54,6 +55,7 @@ const productControllers = {
             error
         })
     },
+
     getOneProduct: async(req, res)=>{
         const { id } = req.params
         let response;
@@ -77,6 +79,7 @@ const productControllers = {
             error
         })
     },
+
     updateProduct: async (req, res) => {
         const { id } = req.params;
         let response;
@@ -87,6 +90,33 @@ const productControllers = {
             const productToUpdate = await ProductModel.findOneAndUpdate({ _id: id }, { ...req.body }, { new: true });
             response = productToUpdate;
             status = 200;
+        } catch (err) {
+            error = `Internal error on the server`
+            status = 500
+            console.log(err);
+        }
+
+        res.status(status).json({
+            success: response ? true : false,
+            status,
+            response,
+            error
+        })
+    },
+
+    updatePrice: async (req, res) => {
+        const { id } = req.params;
+        const { price } = req.body;
+        let response;
+        let error;
+        let status;
+
+        try {
+            const productToUpdate = await ProductModel.findOneAndUpdate({ _id: id }, { price }, { new: true });
+            response = productToUpdate;
+            status = 200;
+            //delete key to the cache
+            redisClient.del('allProducts')
         } catch (err) {
             error = `Internal error on the server`
             status = 500
