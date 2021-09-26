@@ -1,3 +1,5 @@
+const { json } = require("express");
+const redisClient = require("../config/redisConnection");
 const { ProductModel } = require("../models");
 
 const productControllers = {
@@ -37,6 +39,8 @@ const productControllers = {
             const allProducts = await ProductModel.find();
             response= allProducts;
             status=200;
+
+            redisClient.set("allProducts", JSON.stringify(allProducts), 'EX', '60');
             
         } catch (err) {
             error = 'Internal error on the server';

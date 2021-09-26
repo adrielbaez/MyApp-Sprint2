@@ -12,6 +12,4 @@ const checkHasEmptyFields = (req, res, next)=>{
 }
 
 
-module.exports= {
-    checkHasEmptyFields
-}
+module.exports= checkHasEmptyFields;

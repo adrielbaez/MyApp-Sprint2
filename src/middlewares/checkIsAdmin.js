@@ -19,6 +19,4 @@ const checkIsAdmin = ( req, res , next ) => {
     next();
 }
 
-module.exports ={
-    checkIsAdmin
-}
+module.exports = checkIsAdmin;
