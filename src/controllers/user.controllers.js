@@ -5,17 +5,19 @@ const userControllers = {
 
     signup: async (req, res) => {
 
-        let { email, password } = req.body
+        let { email, password, addressBook, address } = req.body
         let response;
         let error;
         let status;
+        addressBook= addressBook ? addressBook : []
 
         let emailExists = await UserModel.findOne({ email })
 
         if (!emailExists) {
             try {
                 password = bcryptjs.hashSync(password, 10);
-                const userToSave = new UserModel({ ...req.body, password })
+                addressBook = [...addressBook, { address }]
+                const userToSave = new UserModel({ ...req.body, password, addressBook })
                 await userToSave.save()
                 const token = await generateJwt( userToSave._id ); 
                 const user = userToSave;
@@ -147,6 +149,31 @@ const userControllers = {
 
         try {
             const userToUpdate = await UserModel.findOneAndUpdate({ _id: id }, { ...req.body }, { new: true });
+            response = userToUpdate;
+            status = 200;
+        } catch (err) {
+            error = `Internal error on the server`
+            status = 500
+            console.log(err);
+        }
+
+        res.status(status).json({
+            success: response ? true : false,
+            status,
+            response,
+            error
+        })
+    },
+
+    userState: async (req, res) => {
+        const { id } = req.params;
+        const { discontinued } = req.body;
+        let response;
+        let error;
+        let status;
+
+        try {
+            const userToUpdate = await UserModel.findOneAndUpdate({ _id: id }, { discontinued }, { new: true });
             response = userToUpdate;
             status = 200;
         } catch (err) {
