@@ -4,14 +4,14 @@ const { checkIsAdmin, checkHasEmptyFields, validateJwt, existsCache } = require(
 const {  productControllers } = require('../controllers');
 const { newProduct, getAllProducts, getOneProduct, deleteProduct, updateProduct } = productControllers;
 
-router.post('/', validateJwt, checkHasEmptyFields, checkIsAdmin, newProduct)
+router.post('/', validateJwt, checkHasEmptyFields, checkIsAdmin, newProduct);
 
-router.get('/', validateJwt, checkIsAdmin, existsCache, getAllProducts)
+router.get('/', validateJwt, checkIsAdmin, existsCache, getAllProducts);
 
-router.get('/:id',validateJwt, checkIsAdmin, getOneProduct)
+router.get('/:id',validateJwt, checkIsAdmin, getOneProduct);
 
-router.patch('/:id',validateJwt, checkHasEmptyFields, checkIsAdmin, updateProduct)
+router.patch('/:id',validateJwt, checkHasEmptyFields, checkIsAdmin, updateProduct);
 
-router.delete('/:id', validateJwt, checkIsAdmin, deleteProduct)
+router.delete('/:id', validateJwt, checkIsAdmin, deleteProduct);
 
-module.exports = router 
+module.exports = router; 

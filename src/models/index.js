@@ -5,9 +5,9 @@ const OrderModel = require('./order.model');
 const PaymentModel = require('./payment.model');
 
 module.exports = {
-    ...Server,
-    ...UserModel,
-    ...ProductModel,
-    ...OrderModel,
-    ...PaymentModel
+    Server,
+    UserModel,
+    ProductModel,
+    OrderModel,
+    PaymentModel
 }

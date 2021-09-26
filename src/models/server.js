@@ -56,8 +56,6 @@ class Server {
         this.app.use(this.paths.docs, swaggerUI.serve, swaggerUI.setup(this.swaggerSpec));
         // users routes
         this.app.use( this.paths.users, require('../routes/user.route'));
-        // auth routes
-        this.app.use( this.paths.auth, require('../routes/auth.route'));
         // products routes
         this.app.use( this.paths.products, require('../routes/product.route'));
         // orders routes
@@ -72,4 +70,4 @@ class Server {
 }
 
 
-module.exports = { Server };
+module.exports = Server;

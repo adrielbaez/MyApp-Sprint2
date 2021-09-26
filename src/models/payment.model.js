@@ -20,4 +20,4 @@ PaymentSchema.methods.toJSON = function() {
 
 const PaymentModel = mongoose.model('payment', PaymentSchema)
 
-module.exports = { PaymentModel };
+module.exports = PaymentModel;
