@@ -1,51 +1,60 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema({
-    nickName: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    firstName: {
-        type: String,
-        required: true
-    },
-    lastName: {
-        type: String,
-        required: true
-    },
-    email: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    phone: {
-        type: String,
-        required: true
-    },
-    address: {
-        type: String,
-        required: true
-    },
-    password: {
-        type: String,
-        required: true
-    },
-    isAdmin: {
-        type: Boolean,
-        default: false
-    },
-    history: {
-        type: Array
-    },
-})
+  nickName: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  firstName: {
+    type: String,
+    required: true,
+  },
+  lastName: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  phone: {
+    type: String,
+    required: true,
+  },
+  address: {
+    type: String,
+    required: true,
+  },
+  addressBook: {
+    type: [{ address: String }],
+    required: false,
+    default: [],
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  isAdmin: {
+    type: Boolean,
+    default: false,
+  },
+  history: {
+    type: Array,
+  },
+  discontinued: {
+    type: Boolean,
+    default: false,
+  },
+});
 
-UserSchema.methods.toJSON = function() {
-    const { __v, password, _id, ...user  } = this.toObject();
-    user.uid = _id;
-    return user;
-}
+UserSchema.methods.toJSON = function () {
+  const { __v, password, _id, ...user } = this.toObject();
+  user.uid = _id;
+  return user;
+};
 
-const UserModel = mongoose.model('user', UserSchema)
+const UserModel = mongoose.model("user", UserSchema);
 
-module.exports = { UserModel };
+module.exports = UserModel;

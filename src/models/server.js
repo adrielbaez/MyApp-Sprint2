@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
-const morgan = require('morgan')
+const morgan = require('morgan');
+const helmet = require('helmet');
+
 //Swagger
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUI = require('swagger-ui-express');
@@ -42,6 +44,8 @@ class Server {
 
         // parseo del body
         this.app.use( express.json() );
+
+        this.app.use(helmet());
         
         this.app.use(morgan('dev'));
     }
@@ -52,8 +56,6 @@ class Server {
         this.app.use(this.paths.docs, swaggerUI.serve, swaggerUI.setup(this.swaggerSpec));
         // users routes
         this.app.use( this.paths.users, require('../routes/user.route'));
-        // auth routes
-        this.app.use( this.paths.auth, require('../routes/auth.route'));
         // products routes
         this.app.use( this.paths.products, require('../routes/product.route'));
         // orders routes
@@ -68,4 +70,4 @@ class Server {
 }
 
 
-module.exports = { Server };
+module.exports = Server;

@@ -4,14 +4,14 @@ const { checkIsAdmin, checkHasEmptyFields, validateJwt } = require('../middlewar
 const {  paymentControllers } = require('../controllers');
 const { newPaymentMethod, getAllPaymentMethods, getOneMethodPayment, updateMethodPayment, deletePaymentMethod } = paymentControllers;
 
-router.post('/', validateJwt, checkHasEmptyFields, checkIsAdmin, newPaymentMethod)
+router.post('/', validateJwt, checkHasEmptyFields, checkIsAdmin, newPaymentMethod);
 
-router.get('/', validateJwt, checkIsAdmin, getAllPaymentMethods)
+router.get('/', validateJwt, checkIsAdmin, getAllPaymentMethods);
 
-router.get('/:id',validateJwt, checkIsAdmin, getOneMethodPayment)
+router.get('/:id',validateJwt, checkIsAdmin, getOneMethodPayment);
 
-router.patch('/:id',validateJwt, checkHasEmptyFields, checkIsAdmin, updateMethodPayment)
+router.patch('/:id',validateJwt, checkHasEmptyFields, checkIsAdmin, updateMethodPayment);
 
-router.delete('/:id', validateJwt, checkIsAdmin, deletePaymentMethod)
+router.delete('/:id', validateJwt, checkIsAdmin, deletePaymentMethod);
 
-module.exports = router 
+module.exports = router; 

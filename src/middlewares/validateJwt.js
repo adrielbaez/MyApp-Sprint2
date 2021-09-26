@@ -42,6 +42,4 @@ const validateJwt = async( req, res, next ) => {
 
 
 
-module.exports = {
-    validateJwt
-}
+module.exports = validateJwt;
