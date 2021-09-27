@@ -3,28 +3,28 @@ const swaggerOptions = {
         info: {
             title: 'Resto',
             version: '1.0.0',
-            description: "API para DELIA Restaurant"
+            description: "API DELIA Restaurant"
         },
         tags: [
             {
                 name: 'users',
-                description: 'Operaciones sobre users'
+                description: 'Operations on users'
             },
             {
                 name: 'products',
-                description: 'Operaciones sobre products'
+                description: 'Operations on products'
             },
             {
                 name: 'orders',
-                description: 'Operaciones sobre orders'
+                description: 'Operations on orders'
             },
             {
                 name: 'payment methods',
-                description: 'Operaciones sobre payment methods'
+                description: 'Operations on payment methods'
             },
         ]
     },
-    apis: ['./src/routes/index.js'],
+    apis: ['./src/routes/*.js'],
 };
 
 module.exports = swaggerOptions;
