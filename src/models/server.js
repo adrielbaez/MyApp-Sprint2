@@ -21,7 +21,6 @@ class Server {
 
         this.paths = {
             users: '/api/users',
-            auth: '/api/auth',
             products: '/api/products',
             orders: '/api/orders',
             payments: '/api/payments',

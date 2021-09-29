@@ -41,41 +41,57 @@ router.patch(
 router.delete('/:id', validateJwt, checkIsAdmin, deleteProduct);
 
 module.exports = router;
-
 /**
  * @swagger
  * /api/products:
- *  post:
- *    summary: Create new Product (Only Admins).
- *    tags: [products]
- *    description : Create new Product (Only Admins).
- *    consumes:
- *      - application/json
- *    parameters:
- *      - in: body
- *        name: products
- *        description: User to create
- *        schema:
- *          type: object
- *          required:
- *            - id
- *          properties:
- *            nameItem:
- *              description: Name Product
- *              type: string
- *            price:
- *              description: Price Product
- *              type: integer
- *            picture:
- *              description: Image Product
- *              type: string
- *            stock:
- *              description: stock Product
- *              type: integer
- *    responses:
- *      201:
- *       description: New Product created.
- *
+ *   post:
+ *     summary: new Product
+ *     tags: [products]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name item
+ *               - price
+ *               - picture
+ *               - stock
+ *             properties:
+ *               nameItem:
+ *                 type: string
+ *                 description: Name Product
+ *               price:
+ *                 type: integer
+ *                 description: Price Product
+ *               picture:
+ *                 type: string
+ *                 description: Picture Product
+ *               stock:
+ *                 type: integer
+ *                 description: stock Product
+ *             example:
+ *               nameItem: Hamburguesa
+ *               price: 250
+ *               picture: fotito
+ *               stock: 10
+ *     responses:
+ *       "201":
+ *         description: Created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 user:
+ *                   $ref: '#/components/schemas/User'
+ *                 tokens:
+ *                   $ref: '#/components/schemas/AuthTokens'
+ *       "400":
+ *         $ref: '#/components/responses/DuplicateEmail'
  */
 
 /**
