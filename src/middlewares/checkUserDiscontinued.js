@@ -1,6 +1,6 @@
 const { UserModel } = require('../models');
 
-const checkUserDiscontinued = (req, res, next) => {
+const checkUserDiscontinued = async(req, res, next) => {
   //destructuro los datos que me llegan por el body
   const { user } = req.body;
 

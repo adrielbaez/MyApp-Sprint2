@@ -3,7 +3,6 @@ const { generateJwt } = require('../helpers');
 const { UserModel, OrderModel } = require('../models');
 const userControllers = {
   signup: async (req, res) => {
-    console.log(req.body);
     let { email, password, addressBook, address } = req.body;
     let response;
     let error;
