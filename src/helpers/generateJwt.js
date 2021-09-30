@@ -10,7 +10,7 @@ const generateJwt = (uid = '')=>{
         }, (err, token)=>{
             if (err) {
                 console.log(err);
-                reject("Can't generate toke")
+                reject("Can't generate token")
             }else{
                 resolve( token )
             }

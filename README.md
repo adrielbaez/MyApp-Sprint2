@@ -13,6 +13,7 @@ _What you need to install the software and how to install them_
 * [Node.js](https://nodejs.org/es/)
 * [Nodemon](https://www.npmjs.com/package/nodemon)
 * [Account on MongoDb](https://account.mongodb.com/account/login?signedOut=true)
+* [Redis](https://redis.io/download)
 
 ### Instalation 🔧
 
@@ -36,4 +37,4 @@ _What you need to install the software and how to install them_
   ```
 ### Documentation 📋
 _The documentation is done with Swagger_
-* [Swagger Documentation ( http://localhost:4000/api-docs )](https://nodejs.org/es/)
+* [Swagger Documentation ( http://localhost:4000/api-docs )](http://localhost:4000/api-docs)
