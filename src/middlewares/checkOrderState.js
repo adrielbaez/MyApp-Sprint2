@@ -11,7 +11,7 @@ const checkOrderState = async(req, res, next)=>{
         try {
             const orderToFind = await OrderModel.findById(id);
 
-            if (orderToFind.stateOrder === 'PENDIENTE' || isAdmin) {
+            if (orderToFind.orderStatus === 'PENDIENTE' || isAdmin) {
                 next();
             } else {
 

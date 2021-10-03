@@ -4,7 +4,7 @@ const { stateOrderUser, stateOrderAdmin } = require('../types/types');
 const orderControllers = {
   // TODO: repensar esto
   newOrder: async (req, res) => {
-    let { allOrders, stateOrder, paymentMethod, date, address } = req.body;
+    let { allOrders, orderStatus, paymentMethod, date, address } = req.body;
     paymentMethod = paymentMethod.toUpperCase();
     const { user: userLogged } = req;
     const { _id } = userLogged;
@@ -21,8 +21,8 @@ const orderControllers = {
         }`;
     address = address ? address : userLogged.address;
     try {
-      stateOrder = stateOrder ? stateOrder.toUpperCase() : '';
-      const existsStateOrder = stateOrderUser.includes(stateOrder);
+      orderStatus = orderStatus ? orderStatus.toUpperCase() : '';
+      const existsStateOrder = stateOrderUser.includes(orderStatus);
 
       const paymentMethods = await PaymentModel.find();
 
@@ -34,7 +34,7 @@ const orderControllers = {
         if (existsStateOrder) {
           const orderToSave = new OrderModel({
             allOrders,
-            stateOrder,
+            orderStatus,
             address,
             paymentMethod,
             date: currentDate,
@@ -70,17 +70,17 @@ const orderControllers = {
   },
   updateOrder: async (req, res) => {
     const { id } = req.params;
-    let { stateOrder } = req.body;
+    let { orderStatus } = req.body;
     const { user: userLogged } = req;
     let response;
     let error;
     let status;
 
     try {
-      stateOrder = stateOrder ? stateOrder.toUpperCase() : '';
+      orderStatus = orderStatus ? orderStatus.toUpperCase() : '';
       const existsStateOrder = userLogged.isAdmin
-        ? stateOrderAdmin.includes(stateOrder)
-        : stateOrderUser.includes(stateOrder);
+        ? stateOrderAdmin.includes(orderStatus)
+        : stateOrderUser.includes(orderStatus);
 
       if (existsStateOrder) {
         const orderToUpdate = await OrderModel.findOneAndUpdate(
@@ -95,6 +95,30 @@ const orderControllers = {
         error = `Order status is not valid`;
         status = 400;
       }
+    } catch (err) {
+      error = `Internal error on the server`;
+      status = 500;
+      console.log(err);
+    }
+
+    res.status(status).json({
+      success: response ? true : false,
+      status,
+      response,
+      error,
+    });
+  },
+
+  getOneOrder: async (req, res) => {
+    const { id } = req.params;
+    let response;
+    let error;
+    let status;
+
+    try {
+      const orderToFind = await OrderModel.findById(id);
+      response = orderToFind;
+      status = 200;
     } catch (err) {
       error = `Internal error on the server`;
       status = 500;

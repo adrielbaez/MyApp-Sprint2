@@ -6,7 +6,7 @@ const OrderSchema = new mongoose.Schema({
         type: [{type: mongoose.Types.ObjectId, ref: 'product'}],
         required: true,
     }, 
-    stateOrder: {
+    orderStatus: {
         type: String,
         required: true,
         default: 'PENDIENTE'

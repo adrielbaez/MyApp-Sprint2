@@ -266,7 +266,7 @@ module.exports = router;
 
 /**
  * @swagger
- * /api/users/state/{id}:
+ * /api/users/{id}:
  *  delete:
 *     summary: Delete User (Only Admins).
  *     description: Only admins can delete users.
