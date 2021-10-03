@@ -37,4 +37,11 @@ _What you need to install the software and how to install them_
   ```
 ### Documentation 📋
 _The documentation is done with Swagger_
+_Requirements: you have to start session, then in autorize put your token and this will authenticate you in the application_
 * [Swagger Documentation ( http://localhost:4000/api-docs )](http://localhost:4000/api-docs)
+
+### Run Test 📋
+_to run the test of the registration form, you must go to the root of the application, and run the following_
+ ```
+  npm test
+ ```
