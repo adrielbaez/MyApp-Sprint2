@@ -1,4 +1,4 @@
-const redisClient = require("../config/redisConnection");
+const redisClient = require("../../config/redisConnection");
 
 const existsCache = ( req, res , next) => {
 
