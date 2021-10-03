@@ -7,7 +7,7 @@ const helmet = require('helmet');
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUI = require('swagger-ui-express');
 const swaggerOptions = require('../docs/swaggerOptions');
-const dataBaseConnection = require('../config/database');
+const dataBaseConnection = require('../../config/database');
 
 class Server {
     constructor() {
