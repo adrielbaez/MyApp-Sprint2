@@ -27,7 +27,7 @@ router.patch('/state/:id', validateJwt, checkIsAdmin, userState);
 
 router.delete('/:id', validateJwt, checkIsAdmin, deleteUser);
 
-router.get('/:id/history', validateJwt, getHistoryUser);
+router.get('/:id/history', getHistoryUser);
 
 module.exports = router;
 /**
@@ -129,3 +129,158 @@ module.exports = router;
  *         description: All Users
  */
 
+/**
+ * @swagger
+ * /api/users/{id}:
+ *  get:
+ *    summary: Get user by ID (Only Admins).
+ *    tags: [users]
+ *    description : Get user by ID.
+ *    consumes:
+ *      - application/json
+ *    parameters:
+ *      - name: id
+ *        in: path
+ *        description: User ID
+ *        required: true
+ *        type: string
+ *    responses:
+ *      200:
+ *       description: Get user success
+ *
+ */
+
+/**
+ * @swagger
+ * /api/users/{id}/history:
+ *  get:
+ *    summary: Get historial user, by user ID.
+ *    tags: [users]
+ *    description : Get historial user, by user ID.
+ *    consumes:
+ *      - application/json
+ *    parameters:
+ *      - name: id
+ *        in: path
+ *        description: User ID
+ *        required: true
+ *        type: string
+ *    responses:
+ *      200:
+ *       description: Get historial user.
+ *
+ */
+
+/**
+ * @swagger
+ * /api/users/{id}:
+ *  patch:
+*     summary: Update a user
+ *     description: Only admins can update other users.
+ *     tags: [users]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: User id
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *                nickName:
+ *                  description: User nickName
+ *                  type: string
+ *                firstName:
+ *                  description: User firstName
+ *                  type: string
+ *                lastName:
+ *                  description: User lastName
+ *                  type: string
+ *                email:
+ *                  description: User email
+ *                  type: string
+ *                phone:
+ *                  description: User number phone
+ *                  type: string
+ *                address:
+ *                  description: User address
+ *                  type: string
+ *                password:
+ *                  description: User password
+ *                  type: string
+ *                isAdmin:
+ *                  description: true or false
+ *                  type: boolean
+ *             example:
+ *               nickName: fakeUser
+ *               firstName: Jhon
+ *               lastName: Doe
+ *               email: fake@gmail.com
+ *               phone: 123645789
+ *               address: wall street 23
+ *               password:  password
+ *     responses:
+ *       "200":
+ *         description: OK
+ */
+
+/**
+ * @swagger
+ * /api/users/state/{id}:
+ *  patch:
+*     summary: Update state user, by user ID (Only Admins).
+ *     description: Only admins can update other users.
+ *     tags: [users]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: User id
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *                discontinued:
+ *                  description: change user state
+ *                  type: boolean
+ *             example:
+ *               discontinued: false
+ *     responses:
+ *       "200":
+ *         description: OK
+ */
+
+/**
+ * @swagger
+ * /api/users/state/{id}:
+ *  delete:
+*     summary: Delete User (Only Admins).
+ *     description: Only admins can delete users.
+ *     tags: [users]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: User id
+ *     responses:
+ *       "200":
+ *         description: OK
+ */
