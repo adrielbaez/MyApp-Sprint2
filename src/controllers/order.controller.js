@@ -154,6 +154,34 @@ const orderControllers = {
       error,
     });
   },
+
+  deleteOrder: async (req, res) => {
+    const { id } = req.params;
+    let response;
+    let error;
+    let status;
+
+    try {
+      const orderDeleted = await OrderModel.findOneAndRemove({
+        _id: id,
+      });
+      response = {
+        orderDeleted,
+      };
+      status = 200;
+    } catch (err) {
+      error = `Internal error on the server`;
+      status = 500;
+      console.log(err);
+    }
+
+    res.status(status).json({
+      success: response ? true : false,
+      status,
+      response,
+      error,
+    });
+  },
 };
 
 module.exports = orderControllers;
