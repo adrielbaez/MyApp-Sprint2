@@ -11,7 +11,6 @@ const orderControllers = {
     let response;
     let error;
     var status;
-
     //date
     const newDate = new Date();
     const currentDate = date
@@ -32,6 +31,7 @@ const orderControllers = {
 
       if (availablePaymentMethod) {
         if (existsStateOrder) {
+          allOrders = allOrders.filter(order => order.amount > 0 )
           const orderToSave = new OrderModel({
             allOrders,
             orderStatus,
@@ -44,7 +44,7 @@ const orderControllers = {
           await orderToSave.save();
           const orderSaved = await OrderModel.find({
             _id: orderToSave._id,
-          }).populate('allOrders');
+          }).populate('allOrders.idProduct');
 
           response = orderSaved;
           status = 200;
@@ -70,12 +70,11 @@ const orderControllers = {
   },
   updateOrder: async (req, res) => {
     const { id } = req.params;
-    let { orderStatus } = req.body;
+    let { orderStatus, allOrders } = req.body;
     const { user: userLogged } = req;
     let response;
     let error;
     let status;
-
     try {
       orderStatus = orderStatus ? orderStatus.toUpperCase() : '';
       const existsStateOrder = userLogged.isAdmin
@@ -83,9 +82,10 @@ const orderControllers = {
         : stateOrderUser.includes(orderStatus);
 
       if (existsStateOrder) {
+        allOrders = allOrders.filter(order => order.amount > 0 )
         const orderToUpdate = await OrderModel.findOneAndUpdate(
           { _id: id },
-          { ...req.body },
+          { ...req.body, orderStatus, allOrders },
           { new: true }
         );
 
@@ -116,7 +116,7 @@ const orderControllers = {
     let status;
 
     try {
-      const orderToFind = await OrderModel.findById(id);
+      const orderToFind = await OrderModel.findById(id).populate('allOrders.idProduct');;
       response = orderToFind;
       status = 200;
     } catch (err) {
@@ -147,6 +147,34 @@ const orderControllers = {
       status = 500;
       console.log(err);
     }
+    res.status(status).json({
+      success: response ? true : false,
+      status,
+      response,
+      error,
+    });
+  },
+
+  deleteOrder: async (req, res) => {
+    const { id } = req.params;
+    let response;
+    let error;
+    let status;
+
+    try {
+      const orderDeleted = await OrderModel.findOneAndRemove({
+        _id: id,
+      });
+      response = {
+        orderDeleted,
+      };
+      status = 200;
+    } catch (err) {
+      error = `Internal error on the server`;
+      status = 500;
+      console.log(err);
+    }
+
     res.status(status).json({
       success: response ? true : false,
       status,

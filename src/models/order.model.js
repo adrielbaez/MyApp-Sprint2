@@ -2,10 +2,7 @@ const mongoose = require('mongoose')
 
 const OrderSchema = new mongoose.Schema({
 
-    allOrders: {
-        type: [{type: mongoose.Types.ObjectId, ref: 'product'}],
-        required: true,
-    }, 
+    allOrders: [{ idProduct: {type: mongoose.Types.ObjectId, ref: 'product'}, amount: {type: Number, required : true}}],
     orderStatus: {
         type: String,
         required: true,

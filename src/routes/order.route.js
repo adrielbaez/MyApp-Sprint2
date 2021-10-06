@@ -2,7 +2,7 @@ const express = require('express');
 const { orderControllers } = require('../controllers');
 const router = express.Router();
 const { validateJwt, checkIsAdmin, checkHasEmptyFields, checkOrderState } = require('../middlewares');
-const { newOrder, updateOrder, getAllOrders, getOneOrder } = orderControllers;
+const { newOrder, updateOrder, getAllOrders, getOneOrder, deleteOrder } = orderControllers;
 
 router.post('/',validateJwt, newOrder);
 
@@ -11,6 +11,8 @@ router.patch('/:id',validateJwt, checkHasEmptyFields, checkOrderState, updateOrd
 router.get('/',validateJwt, checkIsAdmin, getAllOrders);
 
 router.get('/:id',validateJwt, getOneOrder);
+
+router.delete('/:id',validateJwt, checkIsAdmin, deleteOrder);
 
 module.exports = router; 
 
@@ -35,7 +37,7 @@ module.exports = router;
  *             properties:
  *               allOrders:
  *                 type: array
- *                 description: Name Product
+ *                 description: object array with idProduct and amount properties
  *               orderStatus:
  *                 type: integer
  *                 description: order status
@@ -43,7 +45,7 @@ module.exports = router;
  *                 type: string
  *                 description: payment Method
  *             example:
- *               allOrders: ["idProductMongo"]
+ *               allOrders: [{"idProduct":"idMongo", "amount": 1}]
  *               orderStatus: PENDIENTE
  *               paymentMethod: EFECTIVO
  *     responses:
@@ -114,7 +116,7 @@ module.exports = router;
  *             properties:
  *               allOrders:
  *                 type: array
- *                 description: Name Product
+ *                 description: object array with idProduct and amount properties
  *               orderStatus:
  *                 type: integer
  *                 description: order status
@@ -122,9 +124,30 @@ module.exports = router;
  *                 type: string
  *                 description: payment Method
  *             example:
- *               allOrders: ["idProductMongo"]
+ *               allOrders: [{"idProduct":"idMongo", "amount": 1}]
  *               orderStatus: PENDIENTE
  *               paymentMethod: EFECTIVO
+ *     responses:
+ *       "200":
+ *         description: OK
+ */
+
+/**
+ * @swagger
+ * /api/orders/{id}:
+ *  delete:
+*     summary: Delete Order (Only Admins).
+ *     description: Only admins can delete orders.
+ *     tags: [orders]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Order id
  *     responses:
  *       "200":
  *         description: OK

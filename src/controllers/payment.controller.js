@@ -75,14 +75,15 @@ const paymentControllers = {
 
   updateMethodPayment: async (req, res) => {
     const { id } = req.params;
+    let { paymentMethod } = req.body;
     let response;
     let error;
     let status;
-
+    paymentMethod = paymentMethod.toUpperCase();
     try {
       const paymentMethodToUpdate = await PaymentModel.findOneAndUpdate(
         { _id: id },
-        { ...req.body },
+        { paymentMethod },
         { new: true }
       );
       response = paymentMethodToUpdate;

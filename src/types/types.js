@@ -1,6 +1,6 @@
 const stateOrderUser = ['PENDIENTE', 'CONFIRMADO'];
 
-const stateOrderAdmin = ['PREPARANDO', 'ENVIADO', 'ENTREGADO'];
+const stateOrderAdmin = ['CONFIRMADO','PREPARANDO', 'ENVIADO', 'ENTREGADO'];
 
 
 module.exports ={
