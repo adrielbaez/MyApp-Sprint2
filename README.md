@@ -20,7 +20,7 @@ _What you need to install the software and how to install them_
 * Create folder for your installation
 * Enter the created folder and from the console run:
   ```
-  git clone https://github.com/adrielbaez/MyApp-API.git
+  git clone https://github.com/adrielbaez/MyApp-Sprint2.git
   ```
 * Enter the MyApp-Sprint2 folder.
 * Run
