@@ -15,23 +15,32 @@ _What you need to install the software and how to install them_
 * [Account on MongoDb](https://account.mongodb.com/account/login?signedOut=true)
 * [Redis](https://redis.io/download)
 
-### Instalation 🔧
+### Instalation Part 1 🔧
 
 * Create folder for your installation
 * Enter the created folder and from the console run:
   ```
   git clone https://github.com/adrielbaez/MyApp-Sprint2.git
   ```
+### Sets the necessary requirements in the environment variables
+
 * Enter the MyApp-Sprint2 folder.
+* Changes the name of the .env.example file to .env
+* No MongoDB account? create an account [Account on MongoDb](https://account.mongodb.com/account/login?signedOut=true)
+* In the file .env you must replace the url of your database in the environment variable "MONGODB". 
+* Set the name of your secret key.
+
+### Instalation Part 2 🔧
+
 * Run
   ```
   npm install
   ```
 * To raise the server, we run the following command
   ```
-  node server.js
+  npm start
   ```
-* If you have nodemon installed, we run the following command.
+* If you have nodemon installed, Runs the application in development mode
   ```
   npm run dev
   ```
