@@ -1,72 +1,84 @@
-const express = require('express');
-const cors = require('cors');
-const morgan = require('morgan');
-const helmet = require('helmet');
-
+const express = require("express");
+const cors = require("cors");
+const morgan = require("morgan");
+const helmet = require("helmet");
+const httpStatus = require("http-status");
+const compression = require("compression");
 //Swagger
-const swaggerJsDoc = require('swagger-jsdoc');
-const swaggerUI = require('swagger-ui-express');
-const swaggerOptions = require('../docs/swaggerOptions');
-const dataBaseConnection = require('../../config/database');
+const swaggerJsDoc = require("swagger-jsdoc");
+const swaggerUI = require("swagger-ui-express");
+const swaggerOptions = require("../docs/swaggerOptions");
+const dataBaseConnection = require("../../config/database");
+const ApiError = require("../utils/ApiError");
 
 class Server {
-    constructor() {
-        this.app = express();
-        this.port = process.env.PORT;
+  constructor() {
+    this.app = express();
+    this.port = process.env.PORT;
 
-        this.swaggerSpec = swaggerJsDoc(swaggerOptions);
+    this.swaggerSpec = swaggerJsDoc(swaggerOptions);
 
-        // connect database
-        this.connectDB();
+    // connect database
+    this.connectDB();
 
-        this.paths = {
-            users: '/api/users',
-            products: '/api/products',
-            orders: '/api/orders',
-            payments: '/api/payments',
-            docs: '/api-docs',
-        }
-        
-        //middlewares
-        this.middlewares();
-        //routes the app
-        this.routes();
-    }
+    this.paths = {
+      users: "/api/users",
+      products: "/api/products",
+      orders: "/api/orders",
+      payments: "/api/payments",
+      docs: "/api-docs",
+    };
 
-    async connectDB() {
-        await dataBaseConnection();
-    }
+    //middlewares
+    this.middlewares();
+    //routes the app
+    this.routes();
+  }
 
-    middlewares() {
-        // CORS
-        this.app.use( cors() );
+  async connectDB() {
+    await dataBaseConnection();
+  }
 
-        // parseo del body
-        this.app.use( express.json() );
+  middlewares() {
+    // CORS
+    this.app.use(cors());
+    // set security HTTP headers
+    this.app.use(helmet());
+    // parseo del body
+    this.app.use(express.json());
+    // gzip compression
+    this.app.use(compression());
 
-        this.app.use(helmet());
-        
-        this.app.use(morgan('dev'));
-    }
+    this.app.use(morgan("dev"));
+  }
 
-    routes() {
+  routes() {
+    // swagger routes view in localhost:4000/api-docs
+    this.app.use(
+      this.paths.docs,
+      swaggerUI.serve,
+      swaggerUI.setup(this.swaggerSpec)
+    );
+    // users routes
+    this.app.use(this.paths.users, require("../routes/user.route"));
+    // products routes
+    this.app.use(this.paths.products, require("../routes/product.route"));
+    // orders routes
+    this.app.use(this.paths.orders, require("../routes/order.route"));
+    // payments routes
+    this.app.use(this.paths.payments, require("../routes/payment.route"));
 
-        // swagger routes view in localhost:4000/api-docs
-        this.app.use(this.paths.docs, swaggerUI.serve, swaggerUI.setup(this.swaggerSpec));
-        // users routes
-        this.app.use( this.paths.users, require('../routes/user.route'));
-        // products routes
-        this.app.use( this.paths.products, require('../routes/product.route'));
-        // orders routes
-        this.app.use( this.paths.orders, require('../routes/order.route'));
-        // payments routes
-        this.app.use( this.paths.payments, require('../routes/payment.route'));
-    }
+    // send back a 404 error for any unknown api request
+    // this.app.use((req, res, next) => {
+    //   next(new ApiError(httpStatus.NOT_FOUND, "Not found"));
+    // });
+  }
 
-    listen() {
-        this.app.listen( this.port, ()=> console.log(`App listening on port ${this.port}`));
-    }
+  listen() {
+    this.app.listen(this.port, () =>
+      console.log(`App listening on port ${this.port}`)
+    );
+  }
 }
-
 
 module.exports = Server;
