@@ -54,3 +54,7 @@ _to run the test of the registration form, you must go to the root of the applic
  ```
   npm test
  ```
+### AWS 📋
+_To access the infrastructure console, you need an access provided by the administrator_
+
+_Please contact: baez.adriel27@gmail.com_
